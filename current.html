@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<title> StocksX- Live Updating Stocks </title>
+
+<head>
+    <link rel="stylesheet" href="stock.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin:700|Quicksand:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli|PT+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            box-sizing: border-box;
+        }
+        
+        input,
+        textarea,
+        button,
+        select,
+        img,
+        span,
+        a {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            outline: 0;
+        }
+        /*Navigation Bar Start*/
+        
+        .logo {
+            padding: 15px;
+            float: left;
+            margin-left: 8px;
+        }
+        
+        .logo h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 40px;
+            color: white;
+        }
+        
+        .logo a {
+            text-decoration: none;
+        }
+        
+        #x {}
+        
+        .logo img {
+            width: 40px;
+            position: absolute;
+            margin-top: -44px;
+            margin-left: 165px;
+            filter: brightness(1.7);
+        }
+        
+        #menu {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        #close {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        nav {
+            background-image: radial-gradient(circle at 4% -18%, #61bde2, #3bb3e4 47%, #31a3d1);
+        }
+        
+        nav:after {
+            display: table;
+            clear: both;
+            content: '';
+        }
+        
+        nav ul {
+            float: right;
+            padding: 20px;
+        }
+        
+        nav ul li {
+            list-style: none;
+            padding: 10px;
+            float: left;
+            font-family: 'Quicksand', Helvetica, sans-serif;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s linear;
+        }
+        
+        nav ul li a:hover {
+            border-bottom: 2px solid white;
+        }
+        
+        @media screen and (max-width: 670px) {
+            .logo {
+                margin-top: -5px;
+                margin-left: -3px;
+                border-bottom: none;
+            }
+            .logo img {
+                width: 40px;
+                position: absolute;
+                margin-top: -44px;
+                margin-left: 165px;
+                filter: brightness(1.1);
+            }
+            .responsive-border-bottom {
+                width: 100%;
+                height: 2.5px;
+                background-color: transparent;
+                position: fixed;
+                margin-top: 75px;
+            }
+            .logo h1 {
+                color: black;
+            }
+            nav {
+                width: 100%;
+                height: 100vh;
+                display: none;
+                background-image: radial-gradient(circle at 4% -18%, #ffffff, #ffffff 47%, #ffffff);
+            }
+            nav ul {
+                padding-top: 20px;
+                display: block;
+                width: 100%;
+                margin: auto;
+            }
+            .nav-expanded {
+                display: block;
+            }
+            nav ul li a {
+                color: black;
+            }
+            nav ul li {
+                float: none;
+                border-bottom: 2px solid #C0E4F9;
+            }
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            #menu {
+                display: block;
+            }
+        }
+        /*Navigation Bar End*/
+        /*Header Start*/
+        
+        header {
+            width: 100%;
+            height: 50vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-0.3.5&s=d8791fe0f9f4e735158400f9daf6a558&auto=format&fit=crop&w=1302&q=80');
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        header h1 {
+            color: white;
+            font-family: 'Josefin Sans', 'Roboto', Helvetica, sans-serif;
+            padding: 10px;
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 8px;
+            margin-top: 60px;
+        }
+        
+        header p {
+            color: white;
+            width: 500px;
+            font-family: 'Open Sans', Helvetica, sans-serif;
+            text-align: center;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+        
+        header button {
+            border: 2px solid #31a3d1;
+            padding: 10px;
+            width: 155px;
+            font-family: 'Josefin Sans', sans-serif;
+            color: #31a3d1;
+            transition: all 0.2s linear;
+            border-radius: 500px;
+            margin-top: 20px;
+            font-size: 19px;
+            margin-bottom: 60px;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        header button:hover,
+        header button:active {
+            background-color: #31a3d1;
+            color: white;
+        }
+        
+        @media screen and (max-width: 670px) {
+            header {
+                width: 100%;
+                height: auto;
+                border-top: 3.3px solid #31a3d1;
+            }
+            header h1 {
+                width: 90%;
+                font-size: 38px;
+                line-height: 43px;
+                margin-bottom: 8px;
+                margin-top: 70px;
+            }
+            header p {
+                width: 80%;
+                font-size: 16.5px;
+                margin-bottom: 8px;
+            }
+            header button {
+                margin-bottom: 70px;
+            }
+        }
+        /*Header End*/
+        /*Stock Widgets*/
+        
+        .stock-widgets h1 {
+            font-family: 'Josefin Sans', 'Muli', 'Nunito', Helvetica, sans-serif;
+            font-size: 45px;
+        }
+        
+        #tv-medium-widget-57006,
+        #tv-medium-widget-2532c,
+        #tv-medium-widget-8a25c {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+        
+        @media screen and (max-width: 670px) {
+            .stock-widgets h1 {
+                font-size: 38px;
+            }
+        }
+        /*Stock Widgets*/
+        /*Footer*/
+        
+        footer {
+            display: flex;
+            justify-content: space-around;
+            flex-basis: 30%;
+            color: white;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 30px;
+            background-image: radial-gradient(circle at 4% -18%, #7cd0f2, #3bb3e4 47%, #31a3d1);
+        }
+        
+        .footer-logo {
+            margin-top: 50px;
+        }
+        
+        .footer-logo h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 40px;
+            color: white;
+        }
+        
+        .footer-logo a {
+            text-decoration: none;
+        }
+        
+        footer p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16.5px;
+            cursor: pointer;
+        }
+        
+        .footer-logo img {
+            width: 40px;
+            position: absolute;
+            margin-top: -44px;
+            margin-left: 87px;
+            filter: brightness(1.7);
+        }
+        
+        @media screen and (max-width: 720px) {
+            .footer-social {
+                display: none;
+            }
+            .footer-navigation {
+                margin-top: 50px;
+            }
+            footer {
+                flex-basis: 30%;
+                flex-direction: column;
+            }
+            .footer-logo {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                align-self: center;
+            }
+            .footer-logo img {
+                width: 40px;
+                display: flex;
+                justify-content: center;
+                position: relative;
+                align-content: center;
+                display: block;
+                margin: auto;
+                margin-bottom: -15px;
+                margin-top: 20px;
+                filter: brightness(1.7);
+            }
+        }
+        /*Footer*/
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <a href="https://s.codepen.io/TheCodah/fullpage/PQKRGq#">
+            <h1> Stocks<span id="x">X</span> </h1>
+            <img src="http://profitmart.in/wp-content/uploads/2016/01/cropped-Profitmart-LOGO-Light.png" alt="LOGO"> </a>
+    </div>
+    <span id="close"> <img style="width: 25px;" src="http://www.pvhc.net/img5/onbbqnqzkjrtvirmiqnp.png" alt="CLOSE"> </img> </span>
+    <span id="menu"> <img style="width: 25px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR11WXR-a18XfNZknL7S4lu0lLyC4aWZPY4sLd4wNHUNv9So2gd" alt="MENU"> </span>
+
+    <!--Navigation Bar-->
+    <nav>
+        <ul>
+            <li> <a href="https://s.codepen.io/TheCodah/fullpage/PQKRGq#"> Home </a> </li>
+            <li> <a href="#"> Companies </a> </li>
+            <li> <a href="https://s.codepen.io/TheCodah/fullpage/LQmYvL#"> Economy </a> </li>
+            <li> <a href="#"> Contact </a> </li>
+        </ul>
+    </nav>
+    <div id="nav-line" class="responsive-border-bottom"></div>
+    <!--Navigation Bar End-->
+
+
+    <div id="container-menu-void">
+        <!--Header-->
+        <header>
+            <h1> StocksX- Live Updating Stocks </h1>
+            <p> 24/7 Live updating stocks from all major companies, trending cryptocurrencies, The Domestic U.S. stock market and other major international currencies exchange rates. </p>
+            <a href="https://www.tradingview.com/" target="_blank"> <button> Learn More </button> </a>
+        </header>
+        <!--Header End-->
+
+
+        <!--Widgets Start-->
+        <section class="stock-widgets">
+            <h1 style="text-align: center; margin-top: 130px;"> Technology Companies </h1>
+            <!-- TradingView Widget BEGIN -->
+            <div style="margin-top: 60px; margin-bottom: 110px;" id="tv-medium-widget-8a25c"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.MediumWidget({
+                    "container_id": "tv-medium-widget-8a25c",
+                    "symbols": [
+                        [
+                            "Apple",
+                            "NASDAQ:AAPL|1y"
+                        ],
+                        [
+                            "Google",
+                            "NASDAQ:GOOG|1y"
+                        ],
+                        [
+                            "Microsoft",
+                            "NASDAQ:MSFT|1y"
+                        ],
+                        [
+                            "Tesla",
+                            "NASDAQ:TSLA|1y"
+                        ],
+                        [
+                            "Facebook",
+                            "NASDAQ:FB|1y"
+                        ],
+                        [
+                            "Samsung",
+                            "OTC:SSNLF|1y"
+                        ]
+                    ],
+                    "greyText": "Quotes by",
+                    "gridLineColor": "#e9e9ea",
+                    "fontColor": "#83888D",
+                    "underLineColor": "#dbeffb",
+                    "trendLineColor": "#4bafe9",
+                    "width": "1000px",
+                    "height": "400px",
+                    "locale": "en"
+                });
+            </script>
+            <!-- TradingView Widget END -->
+
+            <h1 style="text-align: center;"> Cryptocurrency </h1>
+            <!-- TradingView Widget BEGIN -->
+            <div style="margin-top: 60px; margin-bottom: 110px;" id="tv-medium-widget-2532c"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.MediumWidget({
+                    "container_id": "tv-medium-widget-2532c",
+                    "symbols": [
+                        [
+                            "Bitcoin",
+                            "BITSTAMP:BTCUSD|1y"
+                        ],
+                        [
+                            "Ethereum",
+                            "BITSTAMP:ETHUSD|1y"
+                        ],
+                        [
+                            "Ripple",
+                            "BITSTAMP:XRPUSD|1y"
+                        ],
+                        [
+                            "Litecoin",
+                            "BITSTAMP:LTCUSD|1y"
+                        ]
+                    ],
+                    "greyText": "Quotes by",
+                    "gridLineColor": "#e9e9ea",
+                    "fontColor": "#83888D",
+                    "underLineColor": "#dbeffb",
+                    "trendLineColor": "#4bafe9",
+                    "width": "1000px",
+                    "height": "400px",
+                    "locale": "en"
+                });
+            </script>
+            <!-- TradingView Widget END -->
+
+            <h1 style="text-align: center;"> U.S. Stock Market </h1>
+            <!-- TradingView Widget BEGIN -->
+            <div style="margin-top: 60px; margin-bottom: 130px;" id="tv-medium-widget-57006"></div>
+            <script type="text/javascript" src="tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.MediumWidget({
+                    "container_id": "tv-medium-widget-57006",
+                    "symbols": [
+                        [
+                            "HDFC",
+                            "NSE:NIFTY|1y"
+                        ],
+                        [
+                            "Nasdaq",
+                            "NASDAQ:NDAQ|1y"
+                        ],
+                        [
+                            "S&P 500",
+                            "SP:SPX|1y"
+                        ]
+                    ],
+                    "greyText": "Quotes by",
+                    "gridLineColor": "#e9e9ea",
+                    "fontColor": "#83888D",
+                    "underLineColor": "#dbeffb",
+                    "trendLineColor": "#4bafe9",
+                    "width": "1000px",
+                    "height": "400px",
+                    "locale": "en"
+                });
+            </script>
+            <!-- TradingView Widget END -->
+
+            <!--Widgets End-->
+
+
+
+
+            <!--Footer-->
+            <footer>
+                <div class="footer-logo">
+                    <a href="https://s.codepen.io/TheCodah/fullpage/PQKRGq#">
+                        <h1> Stocks<span id="x">X</span> </h1>
+                        <img src="http://profitmart.in/wp-content/uploads/2016/01/cropped-Profitmart-LOGO-Light.png" alt="LOGO"> </a>
+                </div>
+                <div class="footer-navigation">
+                    <p> Home </p> <br>
+                    <p> Companies </p> <br>
+                    <p> Economy </p> <br>
+                    <p> Contact </p> <br>
+                </div>
+                <div class="footer-social">
+                    <p> Follow me on Facebook </p> <br>
+                    <p> Follow me on Instagram </p> <br>
+                    <p> Follow me on Twitter </p> <br>
+                </div>
+            </footer>
+    </div>
+    <!--Footer End-->
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="stock.js">
+</script>
+
+<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+
+
+<script id="rendered-js">
+    jQuery(document).ready(function() {
+        jQuery("#menu").click(function() {
+            jQuery("nav").slideToggle(400, function() {
+                jQuery(this).toggleClass("nav-expanded").css('display', '');
+            });
+        });
+    });
+
+    jQuery(document).ready(function() {
+        jQuery("#close").click(function() {
+            jQuery("nav").slideToggle(400, function() {
+                jQuery(this).toggleClass("nav-expanded").css('display', '');
+            });
+        });
+    });
+
+    var menu = document.getElementById("menu");
+    var close = document.getElementById("close");
+
+    menu.addEventListener('click', showClose);
+
+    function showClose() {
+        var menu = document.getElementById("menu");
+        var close = document.getElementById("close");
+        var body = document.getElementById("container-menu-void");
+        body.style.display = "none";
+        menu.style.display = "none";
+        close.style.display = "block";
+    }
+
+
+    close.addEventListener('click', showMenu);
+
+    function showMenu() {
+        var menu = document.getElementById("menu");
+        var close = document.getElementById("close");
+        var body = document.getElementById("container-menu-void");
+        body.style.display = "block";
+        menu.style.display = "block";
+        close.style.display = "none";
+    }
+</script>
+
+
+
+</body>
+
+</html>

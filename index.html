@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Stock Game</title>
+
+
+    <link rel='stylesheet' href='//unpkg.com/bootstrap/dist/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css'>
+
+    <style>
+        #app {
+            padding-top: 20px;
+        }
+        
+        [v-cloak] {
+            display: none;
+        }
+        
+        .customBtn {
+            width: 120px;
+        }
+    </style>
+
+</head>
+
+<body translate="no">
+    <div id="app" v-cloak>
+
+        <b-container>
+            <b-row>
+                <b-col>
+                    <b-card title="Stocks">
+                        <b-list-group>
+                            <b-list-group-item v-for="stock in stocks" :key="stock.name">
+                                <b-container>
+                                    <b-row>
+                                        <b-col>{{ stock.name }}</b-col>
+                                        <b-col class="text-right">{{ stock.price | money}}</b-col>
+                                    </b-row>
+                                </b-container>
+                            </b-list-group-item>
+                        </b-list-group>
+                    </b-card>
+                </b-col>
+                <b-col>
+                    <b-card title="Holdings">
+                        <b-list-group>
+                            <b-list-group-item v-for="stock in stocks" :key="stock.name">
+                                <b-container>
+                                    <b-row>
+                                        <b-col>{{ stock.name }}</b-col>
+                                        <b-col class="text-right">{{ stock.held}}</b-col>
+                                    </b-row>
+                                </b-container>
+                            </b-list-group-item>
+                        </b-list-group>
+                        <p class="card-text">
+                            Total value of holdings: {{ holdingValue | money }}
+                        </p>
+                    </b-card>
+                </b-col>
+            </b-row>
+            <!-- todo, add some vertical space -->
+            <div style="height:20px"></div>
+            <!-- this feels lame -->
+            <b-card title="Purchase and Sell Stocks">
+
+                <p class="card-text">
+                    Buy
+                    <b-form-input v-model.number="buy" type="number" style="width:100px;display:inline"></b-form-input> shares of
+                    <b-form-select style="width:120px;display:inline" v-model="buyStock">
+                        <option v-for="stock in stocks" :key="stock.name">{{ stock.name }}</option>
+                    </b-form-select>
+                    <b-button :variant="'success'" @click="buyStocks" class="customBtn">Purchase</b-button>
+                    <span v-if="buyError">Not enough cash.</span>
+                </p>
+                <p class="card-text">
+                    Sell
+                    <b-form-input v-model.number="sell" type="number" style="width:100px;display:inline"></b-form-input> shares of
+                    <b-form-select style="width:120px;display:inline" v-model="sellStock">
+                        <option v-for="stock in stocks" :key="stock.name">{{ stock.name }}</option>
+                    </b-form-select>
+                    <b-button :variant="'success'" @click="sellStocks" class="customBtn">Sell</b-button>
+                    <span v-if="sellError">Not enough on hand.</span>
+                </p>
+
+                <p class="card-text">
+                    You currently have {{ cash | money }} in cash.
+                </p>
+
+            </b-card>
+
+        </b-container>
+
+
+    </div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+
+    <script src='https://unpkg.com/vue@2'></script>
+    <script src='https://unpkg.com/vuex@2'></script>
+    <script src='//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js'></script>
+    <script src='//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js'></script>
+    <script src='js/stocks.js'></script>
+
+</body>
+
+</html>

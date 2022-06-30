@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>CodePen - Google Line Chart</title>
+
+</head>
+
+<body translate="no">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <div id="chart_div" style="width: 1400px; height: 500px;"></div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+
+    <script id="rendered-js">
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Sales'],
+                ['2004', 1000],
+                ['2005', 460],
+                ['2006', 1120],
+                ['2007', 540]
+            ]);
+
+            var options = {
+                legend: 'none',
+                curveType: 'function',
+                lineWidth: 4
+            };
+
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+    </script>
+
+
+
+</body>
+
+</html>
